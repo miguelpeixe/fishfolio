@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/miguelpeixe/miguelpeixe/issues"
   },
-  "homepage": "https://github.com/miguelpeixe/miguelpeixe"
+  "homepage": "https://github.com/miguelpeixe/miguelpeixe",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^4.0.1",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-jade": "^0.15.0",
+    "grunt-contrib-less": "^1.2.0",
+    "grunt-contrib-uglify": "^0.11.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-gh-pages": "^1.0.0"
+  }
 }
