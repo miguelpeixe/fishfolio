@@ -13,21 +13,22 @@ html
     link(rel="stylesheet" href="css/app.css")
     block head
   body
-    header#masthead
-      .header-content
-        .container
-          .twelve.columns
+    .container
+      .four.columns
+        header#masthead
+          .header-content
             .header-branding
               block header-branding
             .header-navigation
                 nav#mastnav
                   block header-nav
-    div(ui-view)
-      .site-sections
-        block sections
-    footer#colophon
-      .container
-        .twelve.columns
+      .five.columns
+        div(ui-view)
+          .site-sections
+            block sections
+    .container
+      .twelve.columns
+        footer#colophon
           block colophon
     
     script(type="text/javascript" src="static/jquery/dist/jquery.min.js")
