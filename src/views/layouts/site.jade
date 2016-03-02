@@ -1,8 +1,8 @@
 doctype html
-html
+html(ng-controller="SiteCtrl")
   head
     block title
-      title Miguel Peixe
+      title {{about.title}}
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width,initial-scale=1")
@@ -23,17 +23,22 @@ html
                 nav#mastnav
                   block header-nav
       .five.columns
-        div(ui-view)
           .site-sections
             block sections
+    #content
+      div(ui-view)
+        block body
     .container
       .twelve.columns
         footer#colophon
           block colophon
     
+    script(type="text/javascript" src="static/underscore/underscore-min.js")
     script(type="text/javascript" src="static/jquery/dist/jquery.min.js")
+    script(type="text/javascript" src="static/firebase/firebase.js")    
     script(type="text/javascript" src="static/angular/angular.min.js")
     script(type="text/javascript" src="static/ui-router/release/angular-ui-router.min.js")    
+    script(type="text/javascript" src="static/angularfire/dist/angularfire.min.js")    
   
     script(type="text/javascript" src="app.js")
     

@@ -7,12 +7,23 @@ block head
 
 block header-branding
   h1
-    a(ui-sref="home") Miguel Peixe
-  p Web Developer
+    a(ui-sref="home") {{about.title}}
+  p {{about.tagline}}
 
 block sections
-  p I'm a São Paulo based web designer and developer focused on community engaging platforms, transparency, maps and data visualization. Currently working with friends at 
-    a(href="http://infoamazonia.org/" rel="external" target="_blank") InfoAmazonia
-    | , 
-    a(href="http://codigourbano.org/" rel="external" target="_blank") Código Urbano
-    | &nbsp;and the Digital Ecology Institute.
+  section#welcome
+    p {{about.description}}
+    //- p I'm a São Paulo based web designer and developer focused on community engaging platforms, transparency, maps and data visualization. Currently working with friends at 
+    //-   a(href="http://infoamazonia.org/" rel="external" target="_blank") InfoAmazonia
+    //-   | , 
+    //-   a(href="http://codigourbano.org/" rel="external" target="_blank") Código Urbano
+    //-   | &nbsp;and the Digital Ecology Institute.
+
+block body
+  section#projects
+    article.project(ng-repeat="project in projects")
+      .container
+        .six.columns
+          h3 
+            a(ui-sref="project({id: project['$id']})")&#9758; {{project.name}}
+          //- p Lorem ipsum dolor sit amet

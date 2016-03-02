@@ -1,0 +1,10 @@
+section#projects
+  article.project
+    .container
+      .four.columns
+        h3 &#9758; {{project.name}}
+        //- p Lorem ipsum dolor sit amet
+      .eight.columns
+        web-device(src="project.url" width="1366" height="800")
+          .details
+            a.rel(ng-href="{{project.url}}" rel="external" target="_blank" title="{{project.name}}") #
