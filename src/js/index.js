@@ -1,7 +1,7 @@
 (function(angular, $, _, undefined) {
 
-  var app = angular.module('mp', [
-    'mp.config',
+  var app = angular.module('fishfolio', [
+    'fishfolio.config',
     'ui.router',
     'firebase'
   ]);
@@ -141,7 +141,7 @@
   ]);
 
   angular.element(document).ready(function() {
-    angular.bootstrap(document, ['mp']);
+    angular.bootstrap(document, ['fishfolio']);
   });
 
 

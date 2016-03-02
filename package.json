@@ -1,21 +1,20 @@
 {
-  "name": "miguelpeixe",
+  "name": "fishfolio",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Static portfolio site based on Angular.JS and Firebase",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/miguelpeixe/miguelpeixe.git"
+    "url": "https://github.com/miguelpeixe/fishfolio.git"
   },
   "author": "Miguel Peixe <miguel@cardume.art.br> (http://codigourbano.org/)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/miguelpeixe/miguelpeixe/issues"
+    "url": "https://github.com/miguelpeixe/fishfolio/issues"
   },
-  "homepage": "https://github.com/miguelpeixe/miguelpeixe",
+  "homepage": "https://github.com/miguelpeixe/fishfolio",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-browserify": "^4.0.1",

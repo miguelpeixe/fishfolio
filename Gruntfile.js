@@ -12,7 +12,7 @@ module.exports = function(grunt) {
     ngconstant: {
       dist: {
         options: {
-          name: 'mp.config',
+          name: 'fishfolio.config',
           dest: 'dist/config.js',
           constants: config
         }
