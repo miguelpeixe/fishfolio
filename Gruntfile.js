@@ -1,6 +1,23 @@
+var fs = require('fs');
+
 module.exports = function(grunt) {
 
+  var config = require('./config');
+
+  if(config.cname) {
+    fs.writeFile('./dist/CNAME', config.cname);
+  }
+
   grunt.initConfig({
+    ngconstant: {
+      dist: {
+        options: {
+          name: 'mp.config',
+          dest: 'dist/config.js',
+          constants: config
+        }
+      }
+    },
     browserify: {
       all: {
         files: {
@@ -32,6 +49,9 @@ module.exports = function(grunt) {
     jade: {
       all: {
         options: {
+          data: function(dest, src) {
+            return {config: config};
+          },
           doctype: 'html',
           pretty: false
         },
@@ -101,12 +121,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-ng-constant');
   grunt.loadNpmTasks('grunt-gh-pages');
 
   grunt.registerTask(
     'javascript',
     'Compile scripts.',
-    ['browserify', 'uglify']
+    ['ngconstant', 'browserify', 'uglify']
   );
 
   grunt.registerTask(

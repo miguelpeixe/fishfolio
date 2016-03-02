@@ -1,11 +1,10 @@
 (function(angular, $, _, undefined) {
 
   var app = angular.module('mp', [
+    'mp.config',
     'ui.router',
     'firebase'
   ]);
-
-  app.value('api', 'https://miguelpeixe.firebaseio.com/');
 
   app.config([
     '$stateProvider',
@@ -15,8 +14,7 @@
     function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
       $locationProvider.html5Mode({
-        enabled: false,
-        requireBase: false
+        enabled: false
       });
       $locationProvider.hashPrefix('!');
 
@@ -35,10 +33,12 @@
 
   app.controller('SiteCtrl', [
     '$scope',
-    'api',
+    'firebase',
     '$firebaseArray',
     '$firebaseObject',
-    function($scope, api, $firebaseArray, $firebaseObject) {
+    function($scope, firebase, $firebaseArray, $firebaseObject) {
+
+      var api = 'https://' + firebase + '.firebaseio.com/';
 
       var projects = new Firebase(api + 'projects');
       $scope.projects = $firebaseArray(projects);
@@ -51,9 +51,12 @@
   app.controller('ProjectCtrl', [
     '$scope',
     '$stateParams',
-    'api',
+    'firebase',
     '$firebaseObject',
-    function($scope, $stateParams, api, $firebaseObject) {
+    function($scope, $stateParams, firebase, $firebaseObject) {
+
+      var api = 'https://' + firebase + '.firebaseio.com/';
+
       var project = new Firebase(api + 'projects/' + $stateParams.id);
       $scope.project = $firebaseObject(project);
     }
