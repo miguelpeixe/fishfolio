@@ -1,4 +1,4 @@
-angular.module('mp.config', [])
+angular.module('fishfolio.config', [])
 
 .constant('firebase', 'miguelpeixe')
 
