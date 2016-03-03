@@ -1,0 +1,8 @@
+h2 
+  span(ng-show="project.$id") Editing project
+  span(ng-hide="project.$id") New project
+form(ng-submit="project.$id ? project.$save() : projects.$add(project)")
+  input#name(type="text" ng-model="project.name" placeholder="Name")
+  input#url(type="text" ng-model="project.url" placeholder="URL")
+  textarea#description(ng-model="project.description" placeholder="Description")
+  input(type="submit" value="Submit")

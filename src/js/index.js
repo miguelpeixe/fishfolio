@@ -3,6 +3,7 @@
   var app = angular.module('fishfolio', [
     'fishfolio.config',
     'ui.router',
+    'ngDialog',
     'firebase'
   ]);
 
@@ -23,7 +24,7 @@
         url: ''
       })
       .state('project', {
-        url: '/projects/:id',
+        url: '/projects/:projectId',
         controller: 'ProjectCtrl',
         templateUrl: 'views/project.html'
       });
@@ -33,18 +34,95 @@
 
   app.controller('SiteCtrl', [
     '$scope',
+    '$state',
     'firebase',
     '$firebaseArray',
     '$firebaseObject',
-    function($scope, firebase, $firebaseArray, $firebaseObject) {
+    '$firebaseAuth',
+    'ngDialog',
+    function($scope, $state, firebase, $firebaseArray, $firebaseObject, $firebaseAuth, ngDialog) {
 
-      var api = 'https://' + firebase + '.firebaseio.com/';
+      var ref = new Firebase(firebase);
+      $scope.authObj = $firebaseAuth(ref);
 
-      var projects = new Firebase(api + 'projects');
+      // Check auth
+      $scope.$watch(function() {
+        return $scope.authObj.$getAuth();
+      }, function(auth) {
+        $scope.user = auth;
+      });
+
+      $scope.login = function() {
+        $scope.authDialog = ngDialog.open({
+          template: 'views/login.html',
+          controller: 'AuthCtrl'
+        });
+      };
+
+      $scope.$on('logged.in', function() {
+        if($scope.authDialog) {
+          $scope.authDialog.close();
+          $scope.authDialog = null;
+        }
+      });
+
+      var projects = new Firebase(firebase + '/projects');
       $scope.projects = $firebaseArray(projects);
 
-      var about = new Firebase(api + 'about');
+      var about = new Firebase(firebase + '/about');
       $scope.about = $firebaseObject(about);
+
+      $scope.settings = function() {
+        $scope.aboutDialog = ngDialog.open({
+          template: 'views/settings.html',
+          scope: $scope
+        });
+      };
+
+      $scope.new = function() {
+        $scope.project = {};
+        $scope.editDialog = ngDialog.open({
+          template: 'views/project-edit.html',
+          scope: $scope
+        });
+      };
+
+      $scope.edit = function(project) {
+        var project = new Firebase(firebase + '/projects/' + project.$id);
+        $scope.project = $firebaseObject(project);
+        $scope.editDialog = ngDialog.open({
+          template: 'views/project-edit.html',
+          scope: $scope
+        });
+      }
+
+      $scope.remove = function(project) {
+        if(confirm('Are you sure?')) {
+          $scope.projects.$remove(project);
+        }
+      }
+    }
+  ]);
+
+  app.controller('AuthCtrl', [
+    'firebase',
+    '$rootScope',
+    '$scope',
+    '$firebaseAuth',
+    function(firebase, $rootScope, $scope, $firebaseAuth) {
+
+      var ref = new Firebase(firebase);
+      $scope.authObj = $firebaseAuth(ref);
+
+      $scope.auth = function(credentials) {
+        $scope.authObj.$authWithPassword(credentials).then(function(data) {
+          $rootScope.$broadcast('logged.in');
+          console.log('Logged in as: ' + data.uid);
+        }, function(err) {
+          console.log('Auth failed: ' + err);
+        });
+      };
+
     }
   ]);
 
@@ -53,12 +131,25 @@
     '$stateParams',
     'firebase',
     '$firebaseObject',
-    function($scope, $stateParams, firebase, $firebaseObject) {
+    'ngDialog',
+    function($scope, $stateParams, firebase, $firebaseObject, ngDialog) {
 
-      var api = 'https://' + firebase + '.firebaseio.com/';
+      var project;
 
-      var project = new Firebase(api + 'projects/' + $stateParams.id);
-      $scope.project = $firebaseObject(project);
+      if($stateParams.projectId)
+        project = new Firebase(firebase + '/projects/' + $stateParams.projectId);
+      else
+        project = {};
+
+      $scope.project = $firebaseObject(project || {});
+
+      $scope.edit = function() {
+        $scope.editDialog = ngDialog.open({
+          template: 'views/project-edit.html',
+          scope: $scope
+        });
+      }
+
     }
   ]);
 

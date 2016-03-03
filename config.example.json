@@ -1,5 +1,5 @@
 {
-  "firebase": "miguelpeixe", // Your firebase database name
+  "firebase": "https://miguelpeixe.firebaseio.com", // Your firebase database name
   "cname": "miguel.peixe.co", // CNAME for Github Pages
   "base": "http://miguel.peixe.co/" // Base url of your site
 }

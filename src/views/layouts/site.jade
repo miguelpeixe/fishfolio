@@ -6,11 +6,13 @@ html(ng-controller="SiteCtrl")
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width,initial-scale=1")
-    base(href="#{config.base}")
+    //- base(href="#{config.base}")
     meta(name="fragment" content="!")
     link(href='https://fonts.googleapis.com/css?family=Roboto+Mono:400,100,300,500,700' rel='stylesheet' type='text/css')
     link(rel="stylesheet" href="static/skeleton/css/normalize.css")
     link(rel="stylesheet" href="static/skeleton/css/skeleton.css")
+    link(rel="stylesheet" href="static/ng-dialog/css/ngDialog.min.css")
+    link(rel="stylesheet" href="static/ng-dialog/css/ngDialog-theme-default.min.css")
     link(rel="stylesheet" href="css/app.css")
     block head
   body
@@ -27,19 +29,24 @@ html(ng-controller="SiteCtrl")
           .site-sections
             block sections
     #content
-      div(ui-view)
-        block body
+      block body
     .container
       .twelve.columns
         footer#colophon
           block colophon
     
+    nav#top-nav
+      a(href="javascript:void(0);" ng-click="login()" ng-hide="user") Login
+      a(href="javascript:void(0);" ng-click="settings()" ng-show="user") Settings
+      a(href="javascript:void(0);" ng-click="authObj.$unauth()" ng-show="user") Logout
+
     script(type="text/javascript" src="static/underscore/underscore-min.js")
     script(type="text/javascript" src="static/jquery/dist/jquery.min.js")
-    script(type="text/javascript" src="static/firebase/firebase.js")    
+    script(type="text/javascript" src="static/firebase/firebase.js")
     script(type="text/javascript" src="static/angular/angular.min.js")
-    script(type="text/javascript" src="static/ui-router/release/angular-ui-router.min.js")    
-    script(type="text/javascript" src="static/angularfire/dist/angularfire.min.js")    
+    script(type="text/javascript" src="static/ui-router/release/angular-ui-router.min.js")
+    script(type="text/javascript" src="static/ng-dialog/js/ngDialog.min.js")
+    script(type="text/javascript" src="static/angularfire/dist/angularfire.min.js")
   
     script(type="text/javascript" src="config.js")
     script(type="text/javascript" src="app.js")

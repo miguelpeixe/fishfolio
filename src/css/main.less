@@ -15,6 +15,7 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: Roboto Mono;
   letter-spacing: 0;
 }
 
@@ -27,6 +28,28 @@ a {
     color: rgb(255, 153, 0);
     border-color: rgb(255, 153, 0);
   }
+}
+
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='submit'],
+textarea {
+  width: 100%;
+  display: block;
+  border-radius: 0;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+textarea {
+  font-size: 12px;
+  border-color: #ddd;
+}
+
+textarea {
+  height: 250px;
 }
 
 .container {
@@ -56,6 +79,24 @@ a {
   }
 }
 
+#top-nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  a {
+    display: inline-block;
+    padding: 5px;
+    color: #999;
+    text-transform: lowercase;
+    border-color: #999;
+    border: 0;
+    &:hover {
+      color: #333;
+    }
+  }
+}
+
 #welcome {
   padding: 0 0 60px;
   margin: 0 0 60px;
@@ -68,15 +109,31 @@ a {
 #projects {
   background: #333;
   color: #f0f0f0;
-  padding: 40px 0;
   a {
     color: #f0f0f0;
+  }
+  &.project-list {
+    article.project {
+      h3,
+      a {
+        display: inline-block;
+        margin-right: 20px;
+      }
+      .actions {
+        float: right;
+        a {
+          font-size: 12px;
+          border: 1px solid #444;
+          padding: 4px 8px;
+        }
+      }
+    }
   }
 }
 
 article.project {
-  margin: 0 0 40px;
-  padding: 0 0 40px;
+  margin: 0;
+  padding: 40px 0;
   border-bottom: 1px solid #444;
   h3 {
     text-transform: uppercase;
@@ -127,7 +184,7 @@ article.project {
     right: 0;
     bottom: 0;
     overflow: hidden;
-    background: #666;
+    background: #fff;
   }
   .details {
     position: absolute;
@@ -154,6 +211,24 @@ article.project {
       text-decoration: none;
       border: 0;
       pointer-events: auto;
+    }
+  }
+}
+
+.ngdialog.ngdialog-theme-default {
+  .ngdialog-content {
+    width: 500px;
+    border-radius: 0;
+    font-family: inherit;
+    h2 {
+      font-size: 20px;
+      text-transform: lowercase;
+      border-bottom: 1px solid #ddd;
+      color: #999;
+      padding: 0 0 20px;
+    }
+    form {
+      margin: 0;
     }
   }
 }

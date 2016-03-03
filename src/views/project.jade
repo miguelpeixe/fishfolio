@@ -3,7 +3,8 @@ section#projects
     .container
       .four.columns
         h3 &#9758; {{project.name}}
-        //- p Lorem ipsum dolor sit amet
+        p(ng-show="user") 
+          a(href="javascript:void(0);" ng-click="edit()") Edit
       .eight.columns
         web-device(src="project.url" width="1366" height="800")
           .details

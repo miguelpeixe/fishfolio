@@ -1,0 +1,5 @@
+h2 Login
+form(ng-submit="auth(credentials)")
+  input#email(type="text" ng-model="credentials.email" placeholder="Email")
+  input#password(type="password" ng-model="credentials.password" placeholder="Password")
+  input(type="submit" value="Submit")
