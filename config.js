@@ -1,6 +1,6 @@
 angular.module('fishfolio.config', [])
 
-.constant('firebase', 'miguelpeixe')
+.constant('firebase', 'https://miguelpeixe.firebaseio.com')
 
 .constant('cname', 'miguel.peixe.co')
 
