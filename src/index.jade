@@ -15,14 +15,14 @@ block sections
     p {{about.description || 'Description'}}
 
 block body
-  div(ui-view)
+  div(ui-view autoscroll="true")
   section#projects.project-list
-    article.project(ng-show="user")
+    article.project.new(ng-show="user")
       .container
         .twelve.columns
           h3
             a(href="javascript:void(0);" ng-click="new()") + New project
-    article.project(ng-repeat="project in projects")
+    article.project(ng-repeat="project in projects" ng-hide="project.$id == viewingProject")
       .container
         .twelve.columns
           h3 

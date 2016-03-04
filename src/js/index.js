@@ -52,6 +52,15 @@
         $scope.user = auth;
       });
 
+      $scope.$on('$stateChangeSuccess', function(ev, toState, toParams) {
+        console.log(toParams);
+        if(toParams.projectId) {
+          $scope.viewingProject = toParams.projectId;
+        } else {
+          $scope.viewingProject = false;
+        }
+      });
+
       $scope.login = function() {
         $scope.authDialog = ngDialog.open({
           template: 'views/login.html',
@@ -88,8 +97,12 @@
       };
 
       $scope.edit = function(project) {
-        var project = new Firebase(firebase + '/projects/' + project.$id);
-        $scope.project = $firebaseObject(project);
+        if(typeof project.$save !== 'function') {
+          var project = new Firebase(firebase + '/projects/' + project.$id);
+          $scope.project = $firebaseObject(project);
+        } else {
+          $scope.project = project;
+        }
         $scope.editDialog = ngDialog.open({
           template: 'views/project-edit.html',
           scope: $scope
@@ -133,23 +146,8 @@
     '$firebaseObject',
     'ngDialog',
     function($scope, $stateParams, firebase, $firebaseObject, ngDialog) {
-
-      var project;
-
-      if($stateParams.projectId)
-        project = new Firebase(firebase + '/projects/' + $stateParams.projectId);
-      else
-        project = {};
-
-      $scope.project = $firebaseObject(project || {});
-
-      $scope.edit = function() {
-        $scope.editDialog = ngDialog.open({
-          template: 'views/project-edit.html',
-          scope: $scope
-        });
-      }
-
+      var project = new Firebase(firebase + '/projects/' + $stateParams.projectId);
+      $scope.project = $firebaseObject(project);
     }
   ]);
 

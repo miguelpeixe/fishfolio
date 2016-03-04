@@ -1,10 +1,12 @@
-section#projects
+section#projects.single-project
   article.project
     .container
       .four.columns
-        h3 &#9758; {{project.name}}
-        p(ng-show="user") 
-          a(href="javascript:void(0);" ng-click="edit()") Edit
+        h2 &#9758; {{project.name}}
+        p(ng-show="project.description") {{project.description}}
+        .actions(ng-show="user")
+          a(href="javascript:void(0);" ng-click="edit(project)" title="Edit") E
+          a(href="javascript:void(0);" ng-click="remove(project)" title="Remove") R
       .eight.columns
         web-device(src="project.url" width="1366" height="800")
           .details
