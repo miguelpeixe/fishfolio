@@ -17,16 +17,20 @@ block sections
 block body
   div(ui-view autoscroll="true")
   section#projects.project-list
-    article.project.new(ng-show="user")
+    header#projects-header
       .container
-        .twelve.columns
-          h3
-            a(href="javascript:void(0);" ng-click="new()") + New project
+        .four.columns
+          .header-content
+            h2 Projects
+            button(ng-show="user" ng-click="new()" title="Add new project") +
     article.project(ng-repeat="project in projects" ng-hide="project.$id == viewingProject")
       .container
         .twelve.columns
           h3 
             a(ui-sref="project({projectId: project['$id']})") &#9758; {{project.name}}
+          p.tags(ng-show="project.tags")
+            span(ng-repeat="tag in (project.tags | commaSplit)") {{tag}}
+          p.description {{project.description}}
           .actions(ng-show="user")
             a(href="javascript:void(0);" ng-click="edit(project)" title="Edit") E
             a(href="javascript:void(0);" ng-click="remove(project)" title="Remove") R

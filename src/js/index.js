@@ -4,7 +4,8 @@
     'fishfolio.config',
     'ui.router',
     'ngDialog',
-    'firebase'
+    'firebase',
+    'textAngular'
   ]);
 
   app.config([
@@ -32,15 +33,34 @@
     }
   ]);
 
+  app.factory('FFService', [
+    '$firebaseObject',
+    '$firebaseArray',
+    function($firebaseObject, $firebaseArray) {
+      return {
+        'FFProject': $firebaseObject.$extend({
+          getTags: function() {
+            var tags = this.tags.split(',');
+            tags.forEach(function(tag) {
+              tag = tag.trim();
+            });
+            return tags;
+          }
+        })
+      };
+    }
+  ]);
+
   app.controller('SiteCtrl', [
     '$scope',
     '$state',
     'firebase',
     '$firebaseArray',
     '$firebaseObject',
+    'FFService',
     '$firebaseAuth',
     'ngDialog',
-    function($scope, $state, firebase, $firebaseArray, $firebaseObject, $firebaseAuth, ngDialog) {
+    function($scope, $state, firebase, $firebaseArray, $firebaseObject, FF, $firebaseAuth, ngDialog) {
 
       var ref = new Firebase(firebase);
       $scope.authObj = $firebaseAuth(ref);
@@ -53,7 +73,6 @@
       });
 
       $scope.$on('$stateChangeSuccess', function(ev, toState, toParams) {
-        console.log(toParams);
         if(toParams.projectId) {
           $scope.viewingProject = toParams.projectId;
         } else {
@@ -225,6 +244,29 @@
           });
           $(window).resize();
         }
+      }
+    }
+  ]);
+
+  app.filter('commaSplit', [
+    function() {
+      return function(input) {
+        input = input || '';
+        arr = input.split(',');
+        arr.forEach(function(item) {
+          item = item.trim();
+        });
+        return arr;
+      }
+    }
+  ])
+
+  app.filter('toHtml', [
+    '$sce',
+    function($sce) {
+      return function(input) {
+        input = input || '';
+        return $sce.trustAsHtml(input);
       }
     }
   ]);

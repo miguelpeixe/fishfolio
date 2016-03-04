@@ -8,6 +8,11 @@ section#projects.single-project
           a(href="javascript:void(0);" ng-click="edit(project)" title="Edit") E
           a(href="javascript:void(0);" ng-click="remove(project)" title="Remove") R
       .eight.columns
-        web-device(src="project.url" width="1366" height="800")
+        web-device.desktop-device(src="project.url" width="1366" height="800")
           .details
             a.rel(ng-href="{{project.url}}" rel="external" target="_blank" title="{{project.name}}") #
+        .mobile-display(ng-show="project.mobile")
+          web-device.mobile-device(src="project.url" width="360" height="640")
+    .container
+      .eight.columns.offset-by-two
+        .long-description(ng-show="project.long_description" ng-bind-html="project.long_description | toHtml")

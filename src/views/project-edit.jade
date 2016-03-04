@@ -4,5 +4,12 @@ h2
 form(ng-submit="project.$id ? project.$save() : projects.$add(project)")
   input#name(type="text" ng-model="project.name" placeholder="Name")
   input#url(type="text" ng-model="project.url" placeholder="URL")
+  input#tags(type="text" ng-model="project.tags" placeholder="Tags (comma-separated)")
   textarea#description(ng-model="project.description" placeholder="Description")
+  .checkbox-field
+    input#mobile(type="checkbox" ng-model="project.mobile") 
+    label(for="mobile") Show mobile version
+  h3 
+    label(for="long_description") Long description
+  text-angular#long_description(ng-model="project.long_description")
   input(type="submit" value="Submit")
