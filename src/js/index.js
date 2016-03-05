@@ -60,7 +60,8 @@
     'FFService',
     '$firebaseAuth',
     'ngDialog',
-    function($scope, $state, firebase, $firebaseArray, $firebaseObject, FF, $firebaseAuth, ngDialog) {
+    '$http',
+    function($scope, $state, firebase, $firebaseArray, $firebaseObject, FF, $firebaseAuth, ngDialog, $http) {
 
       var ref = new Firebase(firebase);
       $scope.authObj = $firebaseAuth(ref);
@@ -96,6 +97,20 @@
 
       var projects = new Firebase(firebase + '/projects');
       $scope.projects = $firebaseArray(projects);
+
+      $scope.projects.$loaded().then(function(projects) {
+        projects.forEach(function(project) {
+          if(project.github) {
+            $http.get('https://api.github.com/repos/'+ project.github + '/stats/commit_activity').then(function(data) {
+              project.commitActivity = data.data;
+              project.totalCommits = 0;
+              data.data.forEach(function(week) {
+                project.totalCommits += week.total;
+              });
+            });
+          }
+        });
+      });
 
       var about = new Firebase(firebase + '/about');
       $scope.about = $firebaseObject(about);
@@ -133,6 +148,7 @@
           $scope.projects.$remove(project);
         }
       }
+
     }
   ]);
 
@@ -164,9 +180,23 @@
     'firebase',
     '$firebaseObject',
     'ngDialog',
-    function($scope, $stateParams, firebase, $firebaseObject, ngDialog) {
+    '$http',
+    function($scope, $stateParams, firebase, $firebaseObject, ngDialog, $http) {
+
       var project = new Firebase(firebase + '/projects/' + $stateParams.projectId);
       $scope.project = $firebaseObject(project);
+
+      $scope.project.$loaded().then(function(project) {
+        if(project.github) {
+          $http.get('https://api.github.com/repos/'+ project.github + '/stats/commit_activity').then(function(data) {
+            project.commitActivity = data.data;
+            project.totalCommits = 0;
+            data.data.forEach(function(week) {
+              project.totalCommits += week.total;
+            });
+          });
+        }
+      });
     }
   ]);
 
@@ -243,6 +273,105 @@
             // }, 50);
           });
           $(window).resize();
+        }
+      }
+    }
+  ]);
+
+  app.directive('ghChart', [
+    '$timeout',
+    function($timeout) {
+      return {
+        restrict: 'E',
+        scope: {
+          data: '=',
+          backgroundColor: '=',
+          lineColor: '=',
+          width: '=',
+          height: '=',
+          tooltip: '=',
+          full: '='
+        },
+        replace: true,
+        template: '<div></div>',
+        link: function(scope, element, attrs) {
+
+          $(element).addClass('gh-chart').highcharts({
+            chart: {
+              type: 'spline',
+              backgroundColor: scope.backgroundColor || '#333',
+              width: scope.width,
+              height: scope.height,
+              renderTo: 'gh-chart',
+              events: {
+                load: function() {
+
+                  var series = this.series[0];
+
+                  scope.$watch('data', function(data) {
+                    var d = [];
+                    if(data) {
+                      data.forEach(function(item) {
+                        d.push([
+                          new Date(item.week * 1000).toISOString(),
+                          item.total
+                        ]);
+                      });
+                    }
+                    series.setData(d);
+                  });
+
+                }
+              }
+            },
+            title: false,
+            subtitle: false,
+            tooltip: {
+              enabled: scope.tooltip,
+              followPointer: true,
+              backgroundColor: scope.backgroundColor || null,
+              borderRadius: 0,
+              shadow: false,
+              style: {
+                color: scope.lineColor
+              }
+            },
+            legend: {
+              enabled: false,
+              color: scope.lineColor
+            },
+            credits: {
+              enabled: false
+            },
+            xAxis: {
+              type: 'datetime',
+              dateTimeLabelFormats: {
+                month: '%e. %b',
+                year: '%b'
+              },
+              title: 'Date',
+              tickInterval: 7 * 24 * 3600 * 1000, // 1 week
+              tickWidth: 0,
+              visible: false
+            },
+            yAxis: {
+              min: 0,
+              title: 'Commits',
+              visible: false
+            },
+            series: [{
+              lineWidth: 1,
+              marker: {
+                enabled: false
+              },
+              name: 'Commits',
+              color: scope.lineColor || null,
+              data: []
+            }]
+          });
+          setTimeout(function() {
+            $(element).reflow();
+          });
         }
       }
     }

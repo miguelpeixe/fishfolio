@@ -23,11 +23,12 @@ block body
           .header-content
             h2 Projects
             button(ng-show="user" ng-click="new()" title="Add new project") +
-    article.project(ng-repeat="project in projects" ng-hide="project.$id == viewingProject")
+    article.project(ng-repeat="project in projects | orderBy:'totalCommits':true" ng-hide="project.$id == viewingProject")
       .container
         .twelve.columns
           h3 
             a(ui-sref="project({projectId: project['$id']})") &#9758; {{project.name}}
+          gh-chart(data="project.commitActivity" width="150" height="60" background-color="'#333'" line-color="'#999'" tooltip="false")
           p.tags(ng-show="project.tags")
             span(ng-repeat="tag in (project.tags | commaSplit)") {{tag}}
           p.description {{project.description}}

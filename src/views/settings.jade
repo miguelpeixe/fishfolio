@@ -3,4 +3,6 @@ form(ng-submit="about.$save()")
   input#title(type="text" ng-model="about.title" placeholder="Site title")
   input#tagline(type="text" ng-model="about.tagline" placeholder="Site tagline")
   textarea#description(ng-model="about.description" placeholder="Description")
+  h3 About you
+  input#github(type="text" ng-model="about.github" placeholder="GitHub username")
   input(type="submit" value="Submit")
