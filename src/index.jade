@@ -28,7 +28,7 @@ block body
         .twelve.columns
           h3 
             a(ui-sref="project({projectId: project['$id']})") &#9758; {{project.name}}
-          gh-chart(data="project.commitActivity" width="150" height="60" background-color="'#333'" line-color="'#999'" tooltip="false")
+          gh-chart(data="project.commitActivity" width="150" height="60" line-color="'#999'" tooltip="false")
           p.tags(ng-show="project.tags")
             span(ng-repeat="tag in (project.tags | commaSplit)") {{tag}}
           p.description {{project.description}}
