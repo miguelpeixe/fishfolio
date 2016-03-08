@@ -369,9 +369,6 @@
               data: []
             }]
           });
-          setTimeout(function() {
-            $(element).reflow();
-          });
         }
       }
     }

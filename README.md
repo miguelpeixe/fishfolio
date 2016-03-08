@@ -1,5 +1,3 @@
 # fishfolio
 
-Static portfolio site based on Angular.JS and Firebase.
-
-*Originally built for my own portfolio*
+[Nobackend](http://nobackend.org/) portfolio platform for open source web developers based on [Angular.JS](https://angularjs.org/) and [Firebase](http://firebase.com/).

@@ -12,7 +12,7 @@ section#projects.single-project
           .details
             a.rel(ng-href="{{project.url}}" rel="external" target="_blank" title="{{project.name}}") #
         .mobile-display(ng-show="project.mobile")
-          web-device.mobile-device(src="project.url" width="360" height="640")
+          web-device.mobile-device(src="project.mobile ? project.url : ''" width="360" height="640")
     .gh
       .container
         .twelve.columns
