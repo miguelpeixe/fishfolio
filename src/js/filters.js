@@ -1,6 +1,22 @@
-(function(undefined) {
+(function(_, undefined) {
 
   module.exports = function(app) {
+
+    app.filter('byCommaTags', [
+      function() {
+        return function(input, tag, key) {
+          if(!input || !tag || !key) {
+            return input;
+          } else {
+            _.filter(input, function(item) {
+              return _.find(item[key].split(','), function(t) {
+                return t.trim() == tag;
+              });
+            });
+          }
+        }
+      }
+    ]);
 
     app.filter('commaSplit', [
       function() {
@@ -13,7 +29,7 @@
           return arr;
         }
       }
-    ])
+    ]);
 
     app.filter('toHtml', [
       '$sce',
@@ -26,5 +42,5 @@
     ]);
 
   }
-  
-})();
+
+})(window._);

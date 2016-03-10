@@ -18,5 +18,5 @@ section#projects.single-project
         .twelve.columns
           h2 Recent activity on GitHub
           #gh-chart(ng-show="project.github")
-            gh-chart(data="project.commitActivity" line-color="'#999'" tooltip="true" full="true")
+            gh-chart(data="commitActivity" line-color="'#999'" tooltip="true" full="true")
     .long-description(ng-show="project.long_description" ng-bind-html="project.long_description | toHtml")

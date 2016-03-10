@@ -19,19 +19,34 @@ block body
   section#projects.project-list
     header#projects-header
       .container
-        .four.columns
+        .twelve.columns
           .header-content
             h2 Projects
             button(ng-show="user" ng-click="new()" title="Add new project") +
-    article.project(ng-repeat="project in projects | orderBy:'totalCommits':true" ng-hide="project.$id == viewingProject")
+        .twelve.columns
+          nav.header-nav
+            .container.full
+              .six.columns
+                .tags.nav-item(ng-show="tags")
+                  h3 Project tags
+                  .tag-content
+                    a(href="javascript:void(0);" ng-repeat="tag in tags | orderBy:'count':true" ng-click="filterProject('tags', tag.name)") {{tag.name}}
+                      span.count {{tag.count}}
+              .six.columns
+                .skills.nav-item(ng-show="skills")
+                  h3 Skills
+                  .tag-content
+                    a(href="javascript:void(0);" ng-repeat="skill in skills | orderBy:'count':true" ng-click="filterProject('skills', skill.name)") {{skill.name}}
+                      span.count {{skill.count}}
+    article.project(ng-repeat="project in projects | byCommaTags:filtered.skill:'skills' | byCommaTags:filtered.tag:'tags' | orderBy:totalCommits:true" ng-hide="project.$id == viewingProject")
       .container
         .twelve.columns
           h3 
             a(ui-sref="project({projectId: project['$id']})") &#9758; {{project.name}}
-          gh-chart(data="project.commitActivity" width="150" height="60" line-color="'#999'" tooltip="false")
+          gh-chart(data="ghData[project.$id].commitActivity" width="150" height="60" line-color="'#999'" tooltip="false")
           p.tags(ng-show="project.tags")
             span(ng-repeat="tag in (project.tags | commaSplit)") {{tag}}
-          p.description {{project.description}}
+          //- p.description {{project.description}}
           .actions(ng-show="user")
             a(href="javascript:void(0);" ng-click="edit(project)" title="Edit") E
             a(href="javascript:void(0);" ng-click="remove(project)" title="Remove") R

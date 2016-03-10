@@ -46,21 +46,39 @@
           }
         });
 
+        $scope.filtered = {};
+
+        $scope.filterProject = function(key, val) {
+          $scope.filtered[key] = val;
+        };
+
         var projects = new Firebase(firebase + '/projects');
         $scope.projects = $firebaseArray(projects);
+
+        $scope.ghData = {};
+
+        $scope.totalCommits = function(project) {
+          return $scope.ghData[project.$id].totalCommits;
+        }
 
         $scope.projects.$loaded().then(function(projects) {
           projects.forEach(function(project) {
             if(project.github) {
+              $scope.ghData[project.$id] = {};
               $http.get('https://api.github.com/repos/'+ project.github + '/stats/commit_activity').then(function(data) {
-                project.commitActivity = data.data;
-                project.totalCommits = 0;
+                $scope.ghData[project.$id].commitActivity = data.data;
+                $scope.ghData[project.$id].totalCommits = 0;
                 data.data.forEach(function(week) {
-                  project.totalCommits += week.total;
+                  $scope.ghData[project.$id].totalCommits += week.total;
                 });
               });
             }
           });
+        });
+
+        $scope.projects.$watch(function() {
+          $scope.tags = FF.getUniq($scope.projects, 'tags', ',');
+          $scope.skills = FF.getUniq($scope.projects, 'skills', ',');
         });
 
         var about = new Firebase(firebase + '/about');
@@ -92,13 +110,13 @@
             template: 'views/project-edit.html',
             scope: $scope
           });
-        }
+        };
 
         $scope.remove = function(project) {
           if(confirm('Are you sure?')) {
             $scope.projects.$remove(project);
           }
-        }
+        };
 
       }
     ]);
@@ -140,10 +158,10 @@
         $scope.project.$loaded().then(function(project) {
           if(project.github) {
             $http.get('https://api.github.com/repos/'+ project.github + '/stats/commit_activity').then(function(data) {
-              project.commitActivity = data.data;
-              project.totalCommits = 0;
+              $scope.commitActivity = data.data;
+              $scope.totalCommits = 0;
               data.data.forEach(function(week) {
-                project.totalCommits += week.total;
+                $scope.totalCommits += week.total;
               });
             });
           }

@@ -7,15 +7,33 @@
       '$firebaseArray',
       function($firebaseObject, $firebaseArray) {
         return {
-          'FFProject': $firebaseObject.$extend({
-            getTags: function() {
-              var tags = this.tags.split(',');
-              tags.forEach(function(tag) {
-                tag = tag.trim();
+          getUniq: function(collection, parameter, split) {
+            split = split || false;
+            var all = [];
+            collection.forEach(function(item) {
+              var paramVals = [];
+              if(split) {
+                item[parameter].split(split).forEach(function(val) {
+                  paramVals.push(val.trim());
+                });
+              } else {
+                paramVals.push(item[parameter]);
+              }
+              all = all.concat(paramVals);
+            });
+            var obj = {};
+            all.forEach(function(val) {
+              obj[val] = obj[val] ? (obj[val]) + 1 : 1;
+            });
+            var tags = [];
+            for(var tag in obj) {
+              tags.push({
+                name: tag,
+                count: obj[tag]
               });
-              return tags;
             }
-          })
+            return tags;
+          }
         };
       }
     ]);
