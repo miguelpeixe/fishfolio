@@ -1,4 +1,4 @@
-/*! @license Firebase v2.4.1
+/*! @license Firebase v2.4.2
     License: https://www.firebase.com/terms/terms-of-service.html */
 (function(ns) {
   ns.wrapper = function(goog, fb) {
@@ -6,7 +6,7 @@
     var CLOSURE_NO_DEPS = true;
 
     // Sets CLIENT_VERSION manually, since we can't use a closure --define with WHITESPACE_ONLY compilation.
-    var CLIENT_VERSION = '2.4.1';
+    var CLIENT_VERSION = '2.4.2';
     var COMPILED = false;
 var goog = goog || {};
 goog.global = this;
@@ -10082,6 +10082,9 @@ fb.login.AuthenticationManager.prototype.authWithPopup = function(provider, opt_
     }, 0);
     return;
   }
+  if (provider === "github") {
+    width = 1025;
+  }
   requestInfo.transportOptions["window_features"] = "" + "menubar=yes," + "modal=yes," + "alwaysRaised=yes" + "location=yes," + "resizable=yes," + "scrollbars=yes," + "status=yes," + "height=" + height + "," + "width=" + width + "," + "top=" + (typeof screen === "object" ? (screen["height"] - height) * .5 : 0) + "," + "left=" + (typeof screen === "object" ? (screen["width"] - width) * .5 : 0);
   requestInfo.transportOptions["relay_url"] = fb.login.transports.util.getPopupChannelUrl(this.repoInfo_.namespace);
   requestInfo.transportOptions["requestWithCredential"] = goog.bind(this.requestWithCredential, this);
@@ -11822,6 +11825,10 @@ fb.api.INTERNAL.forceWebSockets = function() {
   fb.realtime.BrowserPollConnection.forceDisallow();
 };
 goog.exportProperty(fb.api.INTERNAL, "forceWebSockets", fb.api.INTERNAL.forceWebSockets);
+fb.api.INTERNAL.isWebSocketsAvailable = function() {
+  return fb.realtime.WebSocketConnection["isAvailable"]();
+};
+goog.exportProperty(fb.api.INTERNAL, "isWebSocketsAvailable", fb.api.INTERNAL.isWebSocketsAvailable);
 fb.api.INTERNAL.setSecurityDebugCallback = function(ref, callback) {
   ref.repo.persistentConnection_.securityDebugCallback_ = callback;
 };
@@ -13085,7 +13092,10 @@ fb.core.Repo.prototype.rerunTransactionQueue_ = function(queue, path) {
   }
   var callbacks = [];
   var events = [];
-  var setsToIgnore = goog.array.map(queue, function(q) {
+  var txnsToRerun = goog.array.filter(queue, function(q) {
+    return q.status === fb.core.TransactionStatus.RUN;
+  });
+  var setsToIgnore = goog.array.map(txnsToRerun, function(q) {
     return q.currentWriteId;
   });
   for (var i = 0;i < queue.length;i++) {
