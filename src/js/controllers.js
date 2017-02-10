@@ -57,7 +57,10 @@
         $scope.ghData = {};
 
         $scope.totalCommits = function(project) {
-          return $scope.ghData[project.$id].totalCommits;
+          var total;
+          if($scope.ghData[project.$id])
+            total = $scope.ghData[project.$id].totalCommits;
+          return total;
         }
 
         $scope.projects.$loaded().then(function(projects) {
