@@ -5,17 +5,16 @@
     app.controller('SiteCtrl', [
       '$scope',
       '$state',
-      'firebase',
       '$firebaseArray',
       '$firebaseObject',
       'FFService',
       '$firebaseAuth',
       'ngDialog',
       '$http',
-      function($scope, $state, firebase, $firebaseArray, $firebaseObject, FF, $firebaseAuth, ngDialog, $http) {
+      function($scope, $state, $firebaseArray, $firebaseObject, FF, $firebaseAuth, ngDialog, $http) {
 
-        var ref = new Firebase(firebase);
-        $scope.authObj = $firebaseAuth(ref);
+        var ref = firebase.database().ref();
+        $scope.authObj = $firebaseAuth();
 
         // Check auth
         $scope.$watch(function() {
@@ -52,7 +51,7 @@
           $scope.filtered[key] = val;
         };
 
-        var projects = new Firebase(firebase + '/projects');
+        var projects = firebase.database().ref().child('projects');
         $scope.projects = $firebaseArray(projects);
 
         $scope.ghData = {};
@@ -81,7 +80,7 @@
           $scope.skills = FF.getUniq($scope.projects, 'skills', ',');
         });
 
-        var about = new Firebase(firebase + '/about');
+        var about = firebase.database().ref().child('about');
         $scope.about = $firebaseObject(about);
 
         $scope.settings = function() {
@@ -101,7 +100,7 @@
 
         $scope.edit = function(project) {
           if(typeof project.$save !== 'function') {
-            var project = new Firebase(firebase + '/projects/' + project.$id);
+            var project = firebase.database().ref().child('projects').child(project.$id);;
             $scope.project = $firebaseObject(project);
           } else {
             $scope.project = project;
@@ -128,11 +127,11 @@
       '$firebaseAuth',
       function(firebase, $rootScope, $scope, $firebaseAuth) {
 
-        var ref = new Firebase(firebase);
-        $scope.authObj = $firebaseAuth(ref);
+        var ref = firebase.database().ref();
+        $scope.authObj = $firebaseAuth();
 
         $scope.auth = function(credentials) {
-          $scope.authObj.$authWithPassword(credentials).then(function(data) {
+          $scope.authObj.$signInWithEmailAndPassword(credentials.email, credentials.password).then(function(data) {
             $rootScope.$broadcast('logged.in');
             console.log('Logged in as: ' + data.uid);
           }, function(err) {
@@ -146,13 +145,12 @@
     app.controller('ProjectCtrl', [
       '$scope',
       '$stateParams',
-      'firebase',
       '$firebaseObject',
       'ngDialog',
       '$http',
-      function($scope, $stateParams, firebase, $firebaseObject, ngDialog, $http) {
+      function($scope, $stateParams, $firebaseObject, ngDialog, $http) {
 
-        var project = new Firebase(firebase + '/projects/' + $stateParams.projectId);
+        var project = firebase.database().ref().child('projects').child($stateParams.projectId);
         $scope.project = $firebaseObject(project);
 
         $scope.project.$loaded().then(function(project) {

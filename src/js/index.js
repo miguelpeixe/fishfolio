@@ -13,7 +13,10 @@
     '$urlRouterProvider',
     '$locationProvider',
     '$httpProvider',
-    function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+    'firebaseConfig',
+    function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, firebaseConfig) {
+
+      firebase.initializeApp(firebaseConfig);
 
       $locationProvider.html5Mode({
         enabled: false

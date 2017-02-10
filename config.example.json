@@ -1,5 +1,11 @@
 {
-  "firebase": "https://miguelpeixe.firebaseio.com", // Your firebase database name
+  "firebaseConfig": { // Firebase init config
+    "apiKey": "api key",
+    "authDomain": "miguelpeixe.firebaseapp.com",
+    "databaseURL": "https://miguelpeixe.firebaseio.com",
+    "storageBucket": "miguelpeixe.appspot.com",
+    "messagingSenderId": "id"
+  },
   "cname": "miguel.peixe.co", // CNAME for Github Pages
   "base": "http://miguel.peixe.co/" // Base url of your site
 }
