@@ -12,12 +12,14 @@
             var all = [];
             collection.forEach(function(item) {
               var paramVals = [];
-              if(split) {
-                item[parameter].split(split).forEach(function(val) {
-                  paramVals.push(val.trim());
-                });
-              } else {
-                paramVals.push(item[parameter]);
+              if(item[parameter]) {
+                if(split) {
+                  item[parameter].split(split).forEach(function(val) {
+                    paramVals.push(val.trim());
+                  });
+                } else {
+                  paramVals.push(item[parameter]);
+                }
               }
               all = all.concat(paramVals);
             });
